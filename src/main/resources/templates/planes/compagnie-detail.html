@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Compagnie Aérienne</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .flotte-card {
+            background-color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 5px solid #4CAF50;
+        }
+        .flotte-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        .flotte-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .nombre-appareils {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .specs-table th, .specs-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .specs-table th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #333;
+        }
+        .specs-table tr:hover {
+            background-color: #f0f0f0;
+        }
+        .spec-label {
+            font-weight: 600;
+            color: #4CAF50;
+            width: 250px;
+        }
+        .spec-value {
+            color: #666;
+        }
+        .link-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .link-back:hover {
+            background-color: #45a049;
+        }
+        .no-flottes {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compagnie Aérienne: <span th:text="${compagnie.nom}"></span></h1>
+        
+        <div th:if="${flotteDetails != null and flotteDetails.size() > 0}">
+            <div th:each="flotteDetail : ${flotteDetails}" class="flotte-card">
+                <div class="flotte-header" th:if="${flotteDetail.avion != null}">
+                    <div class="flotte-title" th:text="${flotteDetail.avion.idAlFull}"></div>
+                    <div class="nombre-appareils" th:text="${flotteDetail.flotte.nombre} + ' appareil(s)'"></div>
+                </div>
+
+                <div th:if="${flotteDetail.avion != null}">
+                    <table class="specs-table">
+                        <tr>
+                            <td class="spec-label">Constructeur</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.constructeur}"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Modèle</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.modele}"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Famille</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.famille}"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Nombre de moteurs</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.nbreMoteurs}"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Passagers (min - max)</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.nbrePassMin} + ' - ' + ${flotteDetail.avion.nbrePassMax}"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Envergure</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.envergure} + ' m'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Longueur</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.longueur} + ' m'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Hauteur</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.hauteur} + ' m'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Largeur fuselage</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.largeurFuselage} + ' m'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Largeur cabine</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.largeurCabine} + ' m'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">Volume cargo</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.volumeCargo} + ' m²'"></td>
+                        </tr>
+                        <tr>
+                            <td class="spec-label">LD3</td>
+                            <td class="spec-value" th:text="${flotteDetail.avion.ld3}"></td>
+                        </tr>
+                        <tr th:if="${flotteDetail.avion.miseEnService != null}">
+                            <td class="spec-label">Mise en service</td>
+                            <td class="spec-value" th:text="${#dates.format(flotteDetail.avion.miseEnService, 'dd/MM/yyyy')}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${flotteDetails == null or flotteDetails.size() == 0}" class="no-flottes">
+            <p>Aucune flotte trouvée pour cette compagnie.</p>
+        </div>
+
+        <a href="/compagnie" class="link-back">Retour aux compagnies</a>
+    </div>
+</body>
+</html>

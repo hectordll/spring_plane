@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Compagnies Aériennes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .link-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .link-back:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Compagnies Aériennes</h1>
+    
+    <div th:if="${compagnie != null and compagnie.size() > 0}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="c : ${compagnie}">
+                    <td th:text="${c.id}"></td>
+                    <td><a th:href="@{'/compagnie/' + ${c.id}}" th:text="${c.nom}"></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div th:if="${compagnie == null or compagnie.size() == 0}" class="no-data">
+        <p>Aucune compagnie aérienne trouvée.</p>
+    </div>
+    
+    <br>
+    <a href="/" class="link-back">Retour à l'accueil</a>
+</body>
+</html>
